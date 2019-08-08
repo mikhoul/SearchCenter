@@ -76,8 +76,8 @@ function LoadDefaults() {
 
         currentSiteImage.addEventListener("mouseup", searchCurrentSite, false);
         //fix  getdomain
-        //fix  
-        //look for opensearch first, perhaps save it 
+        //fix
+        //look for opensearch first, perhaps save it
 
 
 
@@ -530,7 +530,7 @@ function searchTextKeyPress(e) {
 //        case 2: return mouseClickType.right;
 //            break;
 //    }
-//  
+//
 
 //};
 ////instead if int we could have objects
@@ -621,7 +621,7 @@ function searchById(engineId, terms, sameWindow) {
 
     //maybe this engine list should be passed in
     ////////////    engineList.forEach(function(currentEngineId) {
-    ////////////        if (engineId != currentEngineId)//don't search on last pressed 
+    ////////////        if (engineId != currentEngineId)//don't search on last pressed
     ////////////        {
     ////////////            bgPage.searchById(currentEngineId, terms, false);
     ////////////        } else {
@@ -674,8 +674,8 @@ function searchCurrentSite() {
         //bug check that it an actual domain (e.g try doing when from popup.html is in the address bar, could this happen other times?)
         var domain = getDomain(address); //.toString().match(/^https?:\/\/([^\/]*)\//ig)[0];
         log("domain:" + domain);
-
-        bgPage.searchDomain(domain, GetSearchTerm());
+        if (domain!="")
+          bgPage.searchDomain(domain, GetSearchTerm());
     });
 
 }

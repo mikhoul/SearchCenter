@@ -324,6 +324,8 @@ body
             margin: 5px;
         }
 
-
-
-
+/* 解决显示搜索引擎老是错位的问题 */
+.searchEngineList li{
+    display:inline-block;
+    width:270px;
+    }

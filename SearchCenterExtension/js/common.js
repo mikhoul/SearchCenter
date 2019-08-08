@@ -4,7 +4,7 @@
 var logger = (function () {
     var myLogger = {};
 
-    // basic logger that should be overridden 
+    // basic logger that should be overridden
     myLogger.log = function (value) {
         if (console) {
             console.log(value);
@@ -19,7 +19,7 @@ var logger = (function () {
 /* set Focus */
 
 /// due to a bug in chrome 18 normal page textbox focus does not work in a popup
-///... this is the workaround 
+///... this is the workaround
 // todo this should not be in common as it's popup specfifc
 function setPageFocus() {
     if (location.search !== "?foo") {
@@ -30,9 +30,15 @@ function setPageFocus() {
 /* Url Helper */
 // todo obsolete this with a url helper
 function getDomain(address) {
+    domain=""
     logger.log("attempting to grab domain");
-    logger.log(address); //should return newtab?
-    return address.toString().match(/^https?:\/\/([^\/]*)\//ig)[0];
+    logger.log("addr:"+address); //should return newtab?
+    if (address != null && address !== undefined){
+        domainlist=address.toString().match(/^https?:\/\/([^\/]*)\//ig);
+
+        if (domainlist!=null)  domain=domainlist[0];
+    }
+    return domain
 }
 
 
