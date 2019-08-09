@@ -27,26 +27,29 @@ function LoadDefaults() {
 
     searchText = new textBoxManager(bgPage.settings.useSuggest); //come up with a better name than textman & searchttext... textvalueManager
     // this.searchText.init();//since init starts an asyc call to bgpage, must make sure the callback is ready (depends on textManager)
-
     engines.forEach(function (engine) {
         displayEngines.DrawEngine(engine);
     });
-
     //set the defaultsearch
     var defaultEngine = bgPage.getDefaultEngine();
     var defaultImage = document.getElementById("defaultSearchImage");
     var defaultSearchDiv = document.getElementById("defaultSearchDiv"); //maybe can attach to image, mouse button may have been dodgy
     defaultSearchDiv.title = defaultEngine.SearchEngineName;
-    defaultSearchDiv.addEventListener("mouseup", function (event) { defaultSearch(tabBehaviour.fromMouse(event)); });
+    defaultSearchDiv.addEventListener("mouseup", function (event) {
+        defaultSearch(tabBehaviour.fromMouse(event));
+    });
 
     //TODO LOW needs to be updated, when order of engines are updated (use nofication)
+    log("iconurl：" + defaultEngine.IconUrl);
     defaultImage.src = getCachedImage(defaultEngine.IconUrl);
+    log("imagesrc：" + defaultImage.src);
 
     //rename to newFeatures or displaynewfeatures
     initFeatures();
 
-    document.body.addEventListener("mouseup", function () { searchText.hideDropDown(); }, false);
-
+    document.body.addEventListener("mouseup", function () {
+        searchText.hideDropDown();
+    }, false);
     document.getElementById("optionsLink").addEventListener("click", showOptionsPage, false);
     document.getElementById("linkOptions").addEventListener("click", showOptionsPage, false);
     //todo only one link gets shown
@@ -55,9 +58,8 @@ function LoadDefaults() {
     document.getElementById("hideFeaturesLink").addEventListener("click", hideFeatures, false);
     document.getElementById("mycroftLink").addEventListener("click", openNewPage, false);
     document.getElementById("addCurrentSite").addEventListener("click", addCurrentSite, false);
-
     //set search current site
-    chrome.tabs.getSelected(null, function (tab) {
+    chrome.tabs.query({currentWindow: true,active: true}, function (tab) {
         var address = tab.url;
         //bug check that it an actual domain (e.g try doing when from popup.html is in the address bar, could this happen other times?)
         var domain = getDomain(address); //.toString().match(/^https?:\/\/([^\/]*)\//ig)[0];
@@ -95,12 +97,12 @@ function LoadDefaults() {
 
 this.publicMethods = new function (context) {
     //  var context = context;
-
     //no real point making it json
-    return { selectedTextFound: function (result) {
-        context.searchText.setSelectedText(result);
-    }
-        };
+    return {
+        selectedTextFound: function (result) {
+            context.searchText.setSelectedText(result);
+        }
+    };
 
 
 }(this);
@@ -139,7 +141,9 @@ function DisplayEngines(nodeId) {
         li.setAttribute("alt", SearchEngineData.SearchEngineName);
         var div = document.createElement('div');
 
-        div.addEventListener("mouseup", function (event) { engineClick(event, SearchEngineData.Id); }, false);
+        div.addEventListener("mouseup", function (event) {
+            engineClick(event, SearchEngineData.Id);
+        }, false);
         div.addEventListener("contextmenu", function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -184,8 +188,8 @@ function GetSearchTerm() {
 function textBoxManager(useSuggest) {
     //think about removeing edit mode
     //-3,-2,-1,0[,select],0,1,2,3
-    console.log("loading textBoxManager");
-
+    log("loading textBoxManager");
+    
     var self = this;
     var editText = ""; //maybe remember the current user key input
     var searchBox = document.getElementById("searchText");
@@ -194,15 +198,22 @@ function textBoxManager(useSuggest) {
     var suggestDataSource;
 
     var status = {
-        current: null, selection: "selection", edit: "edit", last: "last", suggest: "suggest",
+        current: null,
+        selection: "selection",
+        edit: "edit",
+        last: "last",
+        suggest: "suggest",
         setStatus: function (mode) {
             this.current = mode;
         },
-        isCurrent: function (mode)
-        { return current == mode },
+        isCurrent: function (mode) {
+            return current == mode
+        },
         selectedText: null,
         //can we make this into a propery?
-        hasSelection: function () { return this.selectedText != null },
+        hasSelection: function () {
+            return this.selectedText != null
+        },
         index: 0
     }
 
@@ -276,6 +287,7 @@ function textBoxManager(useSuggest) {
         status.setStatus(status.selection);
         setSearchText(status.selectedText);
     }
+
     function applyLastText(index) {
         index = index || 0;
         var text = bgPage.searchHistory.term(index);
@@ -365,13 +377,13 @@ function textBoxManager(useSuggest) {
                     applySelectedText();
                     break;
                 }
-            case status.selection:
-                applyLastText();
-                break;
-            case status.last:
+                case status.selection:
+                    applyLastText();
+                    break;
+                case status.last:
 
-                applyLastText(status.index + 1);
-                break;
+                    applyLastText(status.index + 1);
+                    break;
 
         }
 
@@ -388,16 +400,16 @@ function textBoxManager(useSuggest) {
                     applySelectedText();
                     break;
                 }
-            case status.selection:
-                applyEditText();
-                break;
-            case status.edit:
-                editText = self.searchTerm();
-                highlightSuggest(status.index);
-                break;
-            case status.suggest:
-                highlightSuggest(status.index + 1);
-                break;
+                case status.selection:
+                    applyEditText();
+                    break;
+                case status.edit:
+                    editText = self.searchTerm();
+                    highlightSuggest(status.index);
+                    break;
+                case status.suggest:
+                    highlightSuggest(status.index + 1);
+                    break;
         }
     }
 
@@ -501,7 +513,6 @@ function textBoxManager(useSuggest) {
 
 function searchTextKeyPress(e) {
 
-
     if (e.shiftKey && e.keyCode == 13) {
         searchCurrentSite();
 
@@ -548,8 +559,7 @@ function searchTextKeyPress(e) {
 
 //turn NEw/Overwirte into objects  tab.IsNew()
 
-function tabBehaviour()
-{ };
+function tabBehaviour() {};
 tabBehaviour.New = 0; //each search is in a new tab
 tabBehaviour.OverWrite = 1; //makes the first search to update the current tab, the rest are new
 tabBehaviour.Multi = 2; //opens new tabs... but does not close popup
@@ -559,8 +569,10 @@ tabBehaviour.fromMouse = function (click) {
 
         case 0:
             return bgPage.getOpenSearchInSameTab() ? tabBehaviour.OverWrite : tabBehaviour.New;
-        case 1: return tabBehaviour.New;
-        case 2: return tabBehaviour.Multi;
+        case 1:
+            return tabBehaviour.New;
+        case 2:
+            return tabBehaviour.Multi;
             break;
     }
 };
@@ -601,8 +613,7 @@ function multiClick(sender, engineId) {
     if (sender.getAttribute("selected")) {
         sender.removeAttribute("selected");
         engineList.remove(engineId);
-    }
-    else {
+    } else {
         engineList.add(engineId);
         sender.setAttribute("selected", "selected");
     }
@@ -668,14 +679,14 @@ function defaultSearch(tabAction, searchQuery) {
 //TODO should we move this into searchHelper also would have to return engine (which may involve a temp googlesite engine
 function searchCurrentSite() {
     //get current domain
-    chrome.tabs.getSelected(null, function (tab) {
+    chrome.tabs.query({currentWindow: true,active: true}, function (tab) {
 
         var address = tab.url;
         //bug check that it an actual domain (e.g try doing when from popup.html is in the address bar, could this happen other times?)
         var domain = getDomain(address); //.toString().match(/^https?:\/\/([^\/]*)\//ig)[0];
-        log("domain:" + domain);
-        if (domain!="")
-          bgPage.searchDomain(domain, GetSearchTerm());
+        log("searchCuurentsite,domain:" + domain);
+        if (domain != "")
+            bgPage.searchDomain(domain, GetSearchTerm());
     });
 
 }
@@ -690,12 +701,16 @@ function inspect(obj) {
 }
 
 function showOptionsPage() {
-    chrome.tabs.create({ url: "options.html" });
+    chrome.tabs.create({
+        url: "options.html"
+    });
 }
 
 function openNewPage(e) {
-    console.log(e);
-    chrome.tabs.create({ url:e.target.href });
+    log(e);
+    chrome.tabs.create({
+        url: e.target.href
+    });
     return false;
 }
 
@@ -709,7 +724,9 @@ function initFeatures() {
 
 
 function viewFeaturePage() {
-    chrome.tabs.create({ url: "features.html" });
+    chrome.tabs.create({
+        url: "features.html"
+    });
     hideFeatures();
 }
 
@@ -727,7 +744,7 @@ function addCurrentSite() {
     log("loading");
     showStatus("loading");
     bgPage.addCurrentWebsite();
-  //  return false;
+    //  return false;
     e.preventDefault();
     e.stopPropagation();
     return false;
@@ -745,7 +762,7 @@ function showStatus(code) {
             hideElement("loading");
 
             //todo should strip http:// and trailing slash
-            chrome.tabs.getSelected(null, function (tab) {
+            chrome.tabs.query({currentWindow: true,active: true}, function (tab) {
                 document.getElementById("mycroftLink").href = "http://mycroft.mozdev.org/search-engines.html?name=" + getDomain(tab.url) + "&opensearch=yes";
             });
             showElement("addFailed");

@@ -190,7 +190,7 @@ function engines() {
     this.reset = function () {
         localStorage.removeItem("EngineList");
         this.importJSONList(GetJSON("SearchEngineList.json", null));
-      //  EngineListContentsChanged();
+      //  EngineListimportJSONListContentsChanged();
     };
 
 //rename this... as it's more of a swap

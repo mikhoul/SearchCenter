@@ -15,6 +15,7 @@ function imageCache() {
     var cacheList = localStorage["ImageCache"] ? JSON.parse(localStorage["ImageCache"]) : {};
 
     this.getCachedImage = function (imageUrl) {
+        log("getimageurl:"+imageUrl);
         if (cacheList[imageUrl]) {
             log("cache hit");
             return cacheList[imageUrl].imageData;
@@ -36,7 +37,8 @@ function imageCache() {
                 //possibly unhook onload event (or make it use img src)
                 log("Image Error");
             };
-            img.src = imageUrl;
+            log("beginloadimage:"+imageUrl);
+            img.src = imageUrl;            
         }
         return imageUrl;
     };
@@ -51,15 +53,17 @@ function imageCache() {
         var data, canvas, ctx;
 
         //do we have create canvas fromt the document... will the memory be cleaned up since it is never added to the document?
+        img.crossOrigin = "Anonymous";
         canvas = document.createElement('canvas');
         canvas.width = img.width;
         canvas.height = img.height;
         // Get '2d' context and draw the image.
         ctx = canvas.getContext("2d");
+        // img.crossOrigin = "Anonymous";
         ctx.drawImage(img, 0, 0, img.width, img.height);
         ctx.drawImage(img, 0, 0);
         log(img.src);
-        log(canvas.width, canvas.height);
+        log("width:"+canvas.width+",height:"+ canvas.height);
 
         data = canvas.toDataURL();
         return data;

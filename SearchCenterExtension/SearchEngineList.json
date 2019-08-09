@@ -11,9 +11,9 @@
             {
                 "Id": "0.087552763375329020.1486336262820347",
                 "name": "腾讯股票",
-                "SearchUrl": "http://gu.qq.com/hksearchcenter",
+                "SearchUrl": "https://gu.qq.com/hksearchcenter",
                 "SearchEngineName": "腾讯股票",
-                "IconUrl": "http://www.qq.com/favicon.ico"
+                "IconUrl": "https://www.qq.com/favicon.ico"
             },
             {
                 "Id": "0.60243924444589330.26654791461176974",
@@ -30,7 +30,7 @@
     {
         "Id": "0.422209107347077950.31970780805901033",
         "name": "Google",
-        "SearchUrl": "http://www.google.com/search?sourceid=chrome&ie=UTF-8&q=searchcenter",
+        "SearchUrl": "https://www.google.com/search?sourceid=chrome&ie=UTF-8&q=searchcenter",
         "SearchEngineName": "Google",
         "IconUrl": "chrome-extension://mgekakgjhhjglcfdlaimbnghendhhmge/images/google.ico",
         "updateUrl": "/xml/openSearch/www.google.com.xml"
@@ -45,9 +45,9 @@
     {
         "Id": "0.2336589875131030.0916590841957925",
         "name": "腾讯股票",
-        "SearchUrl": "http://gu.qq.com/hksearchcenter",
+        "SearchUrl": "https://gu.qq.com/hksearchcenter",
         "SearchEngineName": "腾讯股票",
-        "IconUrl": "http://www.qq.com/favicon.ico"
+        "IconUrl": "https://www.qq.com/favicon.ico"
     },
     {
         "Id": "0.38665000272979280.7107749881559293",
@@ -67,7 +67,7 @@
     {
         "Id": "0.64734149887720640.19579432407067543",
         "name": "Amazon",
-        "SearchUrl": "http://www.amazon.com/s/ref=nb_ss?url=search-alias%3Daps&field-keywords=searchcenter&x=0&y=0",
+        "SearchUrl": "https://www.amazon.com/s/ref=nb_ss?url=search-alias%3Daps&field-keywords=searchcenter&x=0&y=0",
         "SearchEngineName": "Amazon",
         "IconUrl": "chrome-extension://mgekakgjhhjglcfdlaimbnghendhhmge/images/amazon.ico",
         "updateUrl": "/xml/openSearch/www.amazon.com.xml"
@@ -75,7 +75,7 @@
     {
         "Id": "0.97796645157263320.8787450472356928",
         "name": "Wikipedia",
-        "SearchUrl": "http://en.wikipedia.org/w/index.php?title=Special:Search&search=searchcenter",
+        "SearchUrl": "https://en.wikipedia.org/w/index.php?title=Special:Search&search=searchcenter",
         "SearchEngineName": "Wikipedia",
         "IconUrl": "chrome-extension://mgekakgjhhjglcfdlaimbnghendhhmge/images/Wikipedia.ico",
         "updateUrl": "/xml/openSearch/en.wikipedia.org.xml"
@@ -99,7 +99,7 @@
     {
         "Id": "0.304373275940258650.888397677573249",
         "name": "Twitter",
-        "SearchUrl": "http://twitter.com/search?q=searchcenter",
+        "SearchUrl": "https://twitter.com/search?q=searchcenter",
         "SearchEngineName": "Twitter",
         "IconUrl": "chrome-extension://mgekakgjhhjglcfdlaimbnghendhhmge/images/twitter.ico",
         "updateUrl": "/xml/openSearch/www.twitter.com.xml"
