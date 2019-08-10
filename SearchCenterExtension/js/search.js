@@ -21,7 +21,7 @@ function searchHelper() {
     //};
 
 
-    this.isUrl = function(terms) {
+    this.is_url = function(terms) {
         var urlReg = new RegExp("^https?:\/\/[^ ]+$", "i");
         return urlReg.test(terms);
     };

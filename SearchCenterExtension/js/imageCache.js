@@ -15,9 +15,9 @@ function imageCache() {
     var cacheList = localStorage["ImageCache"] ? JSON.parse(localStorage["ImageCache"]) : {};
 
     this.getCachedImage = function (imageUrl) {
-        log("getimageurl:"+imageUrl);
+        // log("getimageurl:"+imageUrl);
         if (cacheList[imageUrl]) {
-            log("cache hit");
+            // log("cache hit");
             return cacheList[imageUrl].imageData;
         } else {
 

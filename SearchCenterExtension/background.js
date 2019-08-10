@@ -267,13 +267,15 @@ chrome.extension.onRequest.addListener(function (message) {
 
 //note that this only attaches updated tab events, not new tab events
 //since address bar searches create a tab first we don't need to worry about it
+//用来记录搜索历史记录用的
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    log("112");
 
     if (changeInfo.status != "loading")
         return
 
-    if (!isURL(changeInfo.url))
+    log("changeurl:"+changeInfo.url);
+    log("updatetaburl:"+tab.url);
+    if (!is_url(tab.url))
         return
     //look into what point we want shortcut to be called
     if (changeInfo.status == "loading") {
@@ -365,7 +367,7 @@ function defaultSearch(terms, sameWindow) {
 
     var search = new searchHelper();
 
-    if (search.isUrl(terms))
+    if (search.is_url(terms))
         OpenPage(terms, sameWindow);
     else {
         search.hasMatchingWindow(terms, function (terms) {
@@ -495,20 +497,33 @@ function searchDomain(domain, searchTerm) {
 //TODO test how many times this gets hit
 function getSelection() {
     log("injecting selection script");
-    chrome.tabs.query({ currentWindow: true, active: true },function (tab) {
-        if (isURL(tab.url)) {
-            chrome.tabs.executeScript(null, {
-                file: "contentScripts/getSelection.js",
-                allFrames: true
-            }, () => {
-                return chrome.runtime.lastError;
-            });
+    chrome.tabs.query({
+        currentWindow: true,
+        active: true
+    }, function (tabs) {
+        log("tabs.length:"+tabs.length);
+        if (tabs.length > 0) {
+            tab = tabs[0];
+            log("tab.url:"+tab.url);
+
+            if (is_url(tab.url)) {
+                log("inject sucess");
+                chrome.tabs.executeScript(null, {
+                    file: "contentScripts/getSelection.js",
+                    allFrames: true
+                }, () => {
+                    return chrome.runtime.lastError;
+                });
+            }
         }
     });
 }
 
 function OpenPage(pageUrl, sameTab) {
-    chrome.tabs.query({active: true}, function (tab) {
+    chrome.tabs.query({
+        active: true
+    }, function (tabs) {
+        tab = tabs[0];
         if (sameTab) {
             chrome.tabs.update(tab.id, {
                 url: pageUrl
@@ -690,6 +705,7 @@ function attachShortCut(tabId) {
     if (!hotKeyScript) {
         hotKeyScript = generateHotKeyScript();
     }
+
     chrome.tabs.executeScript(tabId, {
         code: hotKeyScript
     });

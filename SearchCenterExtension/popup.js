@@ -42,7 +42,7 @@ function LoadDefaults() {
     //TODO LOW needs to be updated, when order of engines are updated (use nofication)
     log("iconurl：" + defaultEngine.IconUrl);
     defaultImage.src = getCachedImage(defaultEngine.IconUrl);
-    log("imagesrc：" + defaultImage.src);
+    // log("imagesrc：" + defaultImage.src);
 
     //rename to newFeatures or displaynewfeatures
     initFeatures();
@@ -59,7 +59,8 @@ function LoadDefaults() {
     document.getElementById("mycroftLink").addEventListener("click", openNewPage, false);
     document.getElementById("addCurrentSite").addEventListener("click", addCurrentSite, false);
     //set search current site
-    chrome.tabs.query({currentWindow: true,active: true}, function (tab) {
+    chrome.tabs.query({currentWindow: true,active: true}, function (tabs) {
+        tab=tabs[0];
         var address = tab.url;
         //bug check that it an actual domain (e.g try doing when from popup.html is in the address bar, could this happen other times?)
         var domain = getDomain(address); //.toString().match(/^https?:\/\/([^\/]*)\//ig)[0];
@@ -679,7 +680,8 @@ function defaultSearch(tabAction, searchQuery) {
 //TODO should we move this into searchHelper also would have to return engine (which may involve a temp googlesite engine
 function searchCurrentSite() {
     //get current domain
-    chrome.tabs.query({currentWindow: true,active: true}, function (tab) {
+    chrome.tabs.query({currentWindow: true,active: true}, function (tabs) {
+        tab=tabs[0];
 
         var address = tab.url;
         //bug check that it an actual domain (e.g try doing when from popup.html is in the address bar, could this happen other times?)
@@ -762,7 +764,8 @@ function showStatus(code) {
             hideElement("loading");
 
             //todo should strip http:// and trailing slash
-            chrome.tabs.query({currentWindow: true,active: true}, function (tab) {
+            chrome.tabs.query({currentWindow: true,active: true}, function (tabs) {
+                tab=tabs[0];
                 document.getElementById("mycroftLink").href = "http://mycroft.mozdev.org/search-engines.html?name=" + getDomain(tab.url) + "&opensearch=yes";
             });
             showElement("addFailed");
