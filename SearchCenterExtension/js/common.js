@@ -13,8 +13,6 @@ var logger = (function () {
 
     return myLogger;
 }());
-
-
 /* InitPage */
 /* set Focus */
 
@@ -31,8 +29,7 @@ function setPageFocus() {
 // todo obsolete this with a url helper
 function getDomain(address) {
     domain = ""
-    logger.log("attempting to grab domain");
-    logger.log("addr:" + address); //should return newtab?
+    // logger.log("domainaddr:" + address); //should return newtab?
     if (address != null && address !== undefined) {
         domainlist = address.toString().match(/^https?:\/\/([^\/]*)\//ig);
 

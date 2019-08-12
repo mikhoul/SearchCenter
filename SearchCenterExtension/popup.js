@@ -565,7 +565,7 @@ tabBehaviour.New = 0; //each search is in a new tab
 tabBehaviour.OverWrite = 1; //makes the first search to update the current tab, the rest are new
 tabBehaviour.Multi = 2; //opens new tabs... but does not close popup
 tabBehaviour.fromMouse = function (click) {
-    log("mouse");
+    log("frommouse");
     switch (event.button) {
 
         case 0:

@@ -108,6 +108,19 @@ function engines() {
 
     };
 
+    this.findEngineByDomain = function (domain) {
+        return engineList.find(engine=>!engine.Engines && engine.getDomain()==domain);
+        // for (var index = 0; index < engineList.length; index++) {
+        //     engine=engineList[index];
+        //     if (engine && !(engine instanceof engineGroup)){
+        //         if (engine.getDomain()==domain){
+        //             return engine;
+        //         }
+        //     }            
+        //   }
+    };
+
+
 
     //should be in EngineManager
     //could rename to get first egine

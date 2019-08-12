@@ -246,6 +246,9 @@ chrome.extension.onRequest.addListener(function (message) {
                         chrome.tabs.executeScript(null, {
                             file: "contentScripts/searchBox.js",
                             allFrames: false
+                        }, () => {
+                            if (chrome.runtime.lastError)
+                                log("quickSearch:" + chrome.runtime.lastError.message);
                         });
                     }
                 );
@@ -273,8 +276,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (changeInfo.status != "loading")
         return
 
-    log("changeurl:"+changeInfo.url);
-    log("updatetaburl:"+tab.url);
+    log("changeurl:" + changeInfo.url);
+    log("updatetaburl:" + tab.url);
     if (!is_url(tab.url))
         return
     //look into what point we want shortcut to be called
@@ -305,14 +308,16 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
             //also could be find all by domain, although the domain list in engines is currently a hash
             //that hash could be improved to store an array, or just have true/false so it searches for all when the domain exists
 
-            var savedEng = engines.findFirst(function (engine) {
-                if (!(engine instanceof engineGroup)) {
-                    return currentDomain == engine.getDomain();
-                }
-            });
+            // var savedEng = engines.findFirst(function (engine) {
+            //     if (!(engine instanceof engineGroup)) {
+            //         return currentDomain == engine.getDomain();
+            //     }
+            // });
+            
+            var savedEng=engines.findEngineByDomain(currentDomain);
 
             if (savedEng) {
-                log("found Domain:" + savedEng.getDomain());
+                log("found Domain:" + currentDomain);
                 //see if it is a serch engine
                 //    [\^$.|?*+(){} //may have to esacpe these
                 //(.*)       // not &     //[A-Za-z0-9]
@@ -330,7 +335,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
                 if (result) {
 
-                    log(result);
+                    log("add search history"+result);
 
                     searchHistory.add(decodeURIComponent(result[1].replace(/\+/g, " ")));
                     //addHistoryItem(decodeURIComponent(result[1].replace(/\+/g, " ")));
@@ -501,10 +506,10 @@ function getSelection() {
         currentWindow: true,
         active: true
     }, function (tabs) {
-        log("tabs.length:"+tabs.length);
+        log("tabs.length:" + tabs.length);
         if (tabs.length > 0) {
             tab = tabs[0];
-            log("tab.url:"+tab.url);
+            log("tab.url:" + tab.url);
 
             if (is_url(tab.url)) {
                 log("inject sucess");
@@ -708,6 +713,9 @@ function attachShortCut(tabId) {
 
     chrome.tabs.executeScript(tabId, {
         code: hotKeyScript
+    }, () => {
+        if (chrome.runtime.lastError)
+            log("addshortcut:" + chrome.runtime.lastError.message);
     });
 }
 
